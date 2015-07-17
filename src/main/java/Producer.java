@@ -4,6 +4,8 @@ import org.apache.activemq.ScheduledMessage;
 import javax.jms.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 
 public class Producer implements Runnable {
 
@@ -35,21 +37,20 @@ public class Producer implements Runnable {
             long now = System.currentTimeMillis();
             long DELAY = 30 * 1000;
 
-            for (int outerloop = 0; outerloop < 100; outerloop++) {
+            for (int outerloop = 0; outerloop < 20; outerloop++) {
                 long deliverAfterPeriod = outerloop * DELAY;
 
-                for (int i = 0; i < 100; i++) {
+                for (int i = 0; i < 5; i++) {
                     String text = "Message id: " + outerloop + "-" + i + " @ " + System.currentTimeMillis();
                     TextMessage message = session.createTextMessage(text);
-
                     message.setLongProperty(ScheduledMessage.AMQ_SCHEDULED_DELAY, deliverAfterPeriod);
-
                     producer.send(message);
                     System.out.println("Sent message: " + text);
                 }
+
+                TimeUnit.MILLISECONDS.sleep(5000);
             }
 
-            // TimeUnit.MILLISECONDS.sleep(ThreadLocalRandom.current().nextInt(250, 500));
 
             // Clean up
             session.close();

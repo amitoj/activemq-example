@@ -48,7 +48,7 @@ public class Consumer implements Runnable, ExceptionListener {
                     System.out.println("Received:: " + message);
                 }
 
-                TimeUnit.MILLISECONDS.sleep(ThreadLocalRandom.current().nextInt(50, 200));
+                //TimeUnit.MILLISECONDS.sleep(ThreadLocalRandom.current().nextInt(50, 200));
             }
 
             consumer.close();
